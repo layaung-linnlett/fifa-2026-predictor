@@ -17,5 +17,8 @@ dependencies = [
 [project.scripts]
 fifa-predictor = "fifa_predictor.cli:main"
 
+[project.optional-dependencies]
+test = ["pytest>=7.4"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
