@@ -118,7 +118,7 @@ python -m pytest tests/ -v
 
 ---
 
-## Honest limitations
+## Limitations
 
 - **Corners and cards are estimates.** The dataset only records goals, so these figures are based on each team's known playing style rather than measured statistics.
 - **No injury or squad information.** The model assumes both teams play full strength. A key injury could significantly change the real probability.
@@ -128,6 +128,4 @@ python -m pytest tests/ -v
 ---
 
 ## Further reading
-
-- Dixon, M. & Coles, S. (1997). *Modelling Association Football Scores and Inefficiencies in the Football Betting Market.* Journal of the Royal Statistical Society, Series C.
 - [docs/methodology.md](docs/methodology.md) — detailed walkthrough of every modelling decision
