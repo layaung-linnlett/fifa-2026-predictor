@@ -141,19 +141,6 @@ python -m pytest tests/ -v
 **Playoff teams have neutral ratings.** Several 2026 qualification spots were undecided at time of writing. Unresolved playoff slots are assigned a default Elo of 1500.
 
 **Dixon-Coles rho is not fitted from data.** The correction parameter (rho = 0.1) was set conservatively. A properly estimated value would require maximum likelihood estimation on historical goal data.
-
-**No host-nation advantage.** The tournament is played across the USA, Canada, and Mexico. No home-crowd adjustment is applied, though USA and Mexico may carry a small real-world edge.
-
----
-
-## Technical notes
-
-**Why EV-optimal rather than most-likely?** In a competition awarding 25 points for an exact score and 10 for the correct result, the expected value of predicting a common result scoreline often exceeds the expected value of predicting the single most probable exact score. The model solves this explicitly for every match.
-
-**Why Dixon-Coles?** Plain Poisson treats each team's goals as independent. In practice, teams adjust their behaviour at low scorelines — a team losing 0-1 pushes forward, making 1-1 more likely than independence implies. The correction accounts for this in the four most affected results.
-
-**Why Monte Carlo over a closed-form solution?** Computing exact knockout winning probabilities would require summing over every possible path through a 32-team bracket — computationally intractable. Monte Carlo gives estimates stable to ±0.5% at 10,000 runs with a straightforward implementation.
-
 ---
 
 ## Further reading
