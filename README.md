@@ -140,7 +140,7 @@ python -m pytest tests/ -v
 
 **Playoff teams have neutral ratings.** Several 2026 qualification spots were undecided at time of writing. Unresolved playoff slots are assigned a default Elo of 1500.
 
-**Dixon-Coles rho is not fitted from data.** The correction parameter (rho = 0.1) was set conservatively. A properly estimated value would require maximum likelihood estimation on historical goal data.
+**Dixon-Coles rho is not fitted from data.**  The correction parameter (rho = 0.1) was set conservatively. A properly estimated value would require maximum likelihood estimation on historical goal data.
 ---
 
 ## Further reading
