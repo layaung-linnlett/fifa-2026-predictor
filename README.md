@@ -1,29 +1,41 @@
 # FIFA World Cup 2026 Prediction Engine
 
-A clean, reproducible Python package that predicts outcomes for the 2026 FIFA World Cup — 72 group-stage matches, 32 knockout matches, and full tournament odds — using Elo ratings, a Dixon-Coles corrected Poisson model, and Monte Carlo simulation.
-
-Built as a portfolio project for graduate data analyst / data scientist roles.
+A reproducible Python package for predicting the 2026 FIFA World Cup — covering all 72 group-stage matches, 32 knockout matches, and full tournament odds — built on Elo ratings, a Dixon-Coles corrected Poisson model, and Monte Carlo simulation.
 
 ---
 
-## Methodology (plain English)
+## Overview
 
-**Step 1 — Elo ratings.** Every international team is given a numerical strength rating, updated after every match since 2014. Bigger wins move the rating more. World Cup matches count three times more than friendlies, because they are a more reliable signal of true team strength.
-
-**Step 2 — Expected goals.** Before each match, the Elo rating gap is converted into expected goals (xG) for each team — a number representing how many goals they would score on average against this opponent.
-
-**Step 3 — Dixon-Coles Poisson model.** The xG figures are fed into a Poisson distribution to produce a full probability table over all possible scorelines (0-0, 1-0, 2-1, ...). A small correction (Dixon & Coles, 1997) adjusts the probabilities of very low-scoring results, which plain Poisson systematically mis-predicts.
-
-**Step 4 — EV-optimal prediction.** Rather than always predicting the single most likely scoreline, we compute the *expected points* for every possible prediction under the competition scoring rules, and pick the scoreline with the highest expected value.
-
-**Step 5 — Monte Carlo simulation.** The full tournament is simulated 10,000 times. Each run samples random scorelines from the Poisson model, so upsets happen at the right frequency. The fraction of runs each team wins is their title probability.
+| | |
+|---|---|
+| **Matches predicted** | 104 (72 group stage + 32 knockout) |
+| **Simulations** | 10,000 Monte Carlo runs |
+| **Historical data** | ~49,000 international results (2014–2026) |
+| **Test coverage** | 62 unit and integration tests |
+| **Stack** | Python 3.10 · pandas · scipy · click · pytest |
 
 ---
 
-## Example output — title odds (10,000 simulations)
+## How it works
+
+The pipeline has five stages:
+
+**1. Elo ratings** — Each team's strength is represented as a single number, updated after every match since 2014. World Cup results move ratings 3× more than friendlies, reflecting their greater reliability as a signal of true team quality.
+
+**2. Expected goals (xG)** — The Elo gap between two teams is converted into expected goals per team, calibrated to the international tournament average of ~1.3 goals per team per game.
+
+**3. Dixon-Coles Poisson model** — xG figures are fed into a Poisson distribution to produce a full scoreline probability table. A correction from Dixon & Coles (1997) fixes the four low-scoring results that plain Poisson systematically mis-predicts (0-0, 1-0, 0-1, 1-1).
+
+**4. EV-optimal prediction** — Rather than always predicting the most likely scoreline, the model computes expected competition points for every possible prediction and selects the one with the highest expected value. The most probable score and the best prediction are often different.
+
+**5. Monte Carlo simulation** — The full 48-team tournament is simulated 10,000 times, sampling random scorelines from the Poisson model on each run. The fraction of runs a team wins equals their title probability.
+
+---
+
+## Example output — title odds
 
 | Team | Title % | Finalist % | Semi-final % |
-|------|--------:|----------:|-------------:|
+|---|---:|---:|---:|
 | Argentina | ~18% | ~28% | ~42% |
 | Spain | ~15% | ~26% | ~44% |
 | France | ~12% | ~21% | ~36% |
@@ -32,7 +44,7 @@ Built as a portfolio project for graduate data analyst / data scientist roles.
 | Japan | ~5% | ~10% | ~21% |
 | England | ~4% | ~9% | ~18% |
 
-*Results vary slightly by random seed. Run `simulate` to generate fresh numbers.*
+*Generated with `--sims 10000 --seed 42`. Results vary slightly by random seed.*
 
 ---
 
@@ -41,104 +53,111 @@ Built as a portfolio project for graduate data analyst / data scientist roles.
 ```
 fifa-2026-predictor/
 ├── src/fifa_predictor/
-│   ├── elo.py              # Elo ratings with match importance weights
+│   ├── elo.py              # Elo ratings with match importance K-factors
 │   ├── poisson_model.py    # Dixon-Coles corrected Poisson model
-│   ├── cards_corners.py    # Corners / cards estimation
+│   ├── cards_corners.py    # Corners and cards estimation
 │   ├── simulation.py       # Monte Carlo group + knockout simulation
-│   ├── bracket.py          # Fixed FIFA 2026 bracket seeding logic
-│   ├── scoring.py          # Competition points scoring
-│   └── cli.py              # Command-line interface (click)
+│   ├── bracket.py          # Fixed 2026 knockout bracket seeding
+│   ├── scoring.py          # Competition points logic with round multipliers
+│   └── cli.py              # Command-line interface
 ├── data/raw/
 │   ├── results.csv         # ~49,000 historical international results
 │   ├── group_fixtures.csv  # 72 group-stage fixtures
 │   └── knockout_slots.csv  # 32 knockout bracket slots + multipliers
-├── tests/                  # pytest unit + integration tests (77 tests)
-├── outputs/predictions/    # Generated CSVs (gitignored)
-└── docs/methodology.md     # Full technical writeup
+├── tests/                  # 62 pytest unit and integration tests
+├── docs/methodology.md     # Full technical writeup
+└── outputs/predictions/    # Generated CSVs (gitignored)
 ```
 
 ---
 
 ## Setup
 
+Requires Python 3.10+.
+
 ```bash
-# Clone and install
-git clone <your-repo-url>
+git clone https://github.com/layaung-linnlett/fifa-2026-predictor.git
 cd fifa-2026-predictor
 pip install -e .
 ```
 
-Requires Python 3.10+. Dependencies: `pandas`, `scipy`, `numpy`, `click`.
-
 ---
 
-## How to run
+## Usage
 
-### Predict all 72 group-stage matches
+### Predict group-stage matches
+
 ```bash
 python -m fifa_predictor predict-groups
-# Output: outputs/predictions/group_predictions.csv
+# -> outputs/predictions/group_predictions.csv
 ```
 
-Each row includes: predicted scoreline, win/draw/loss probabilities, expected competition points, corners and cards estimates.
+Outputs predicted scoreline, win/draw/loss probabilities, expected competition points, and corners/cards estimates for all 72 matches.
 
-### Run Monte Carlo simulation (title odds)
+### Run the Monte Carlo simulation
+
 ```bash
 python -m fifa_predictor simulate --sims 10000
-# Output: outputs/predictions/title_odds.csv + printed leaderboard
+# -> outputs/predictions/title_odds.csv + printed leaderboard
 ```
 
-Runs the full tournament 10,000 times and aggregates title, finalist, and semi-final probabilities per team. Takes a few minutes.
+Runs the full tournament 10,000 times and prints title, finalist, and semi-final probabilities per team.
 
-### Predict the full knockout bracket
+### Predict the knockout bracket
+
 ```bash
 python -m fifa_predictor predict-knockout
-# Output: outputs/predictions/knockout_predictions.csv + printed bracket
+# -> outputs/predictions/knockout_predictions.csv + printed bracket
 ```
 
-Simulates the group stage to determine the most likely qualifiers, then predicts each knockout match in bracket order.
+Simulates the group stage to identify the most likely qualifiers, then predicts each knockout match in bracket order.
 
-### Options
+### Additional options
+
 ```bash
-python -m fifa_predictor simulate --sims 5000 --seed 0   # different result each run
+python -m fifa_predictor simulate --sims 5000 --seed 0      # fresh random result each run
 python -m fifa_predictor predict-groups --start-date 2018-01-01
 python -m fifa_predictor --help
 ```
 
 ---
 
-## Running the tests
+## Tests
 
 ```bash
 python -m pytest tests/ -v
 ```
 
-77 tests covering Elo update maths, Poisson probability correctness (sum to 1), Dixon-Coles correction bounds, scoring logic, and an integration test for the simulation pipeline.
+62 tests covering Elo update arithmetic, Poisson probability normalisation, Dixon-Coles correction bounds, EV-optimal prediction logic, scoring rules, and an end-to-end simulation integration test.
 
 ---
 
-## Limitations (honest section)
+## Limitations
 
-**Corners and cards are estimated, not data-driven.** The historical dataset only records goals. Per-team style multipliers for corners and cards are informed qualitative estimates. They should be treated as approximate, not as statistically fitted values.
+**Corners and cards are not data-driven.** The historical dataset records only goals. Per-team style multipliers for corners and cards are informed estimates, not statistical fits, and should be treated as approximations.
 
-**Elo does not know about injuries or lineups.** A key player being injured or suspended before a match could shift the real probability significantly. The model treats each match as if both teams field full-strength squads.
+**No injury or lineup information.** The model assumes both teams field full-strength squads. A key absence can shift real probabilities significantly.
 
-**Playoff teams are unknowns.** Several 2026 qualifier spots were still undecided at time of writing. Playoff slots are given neutral Elo ratings of 1500.
+**Playoff teams have neutral ratings.** Several 2026 qualification spots were undecided at time of writing. Unresolved playoff slots are assigned a default Elo of 1500.
 
-**Dixon-Coles rho is not fitted from data.** The correction parameter (rho = 0.1) was set conservatively rather than estimated from historical international match data. A properly fitted value would require a dedicated parameter estimation step (maximum likelihood estimation on the historical dataset).
+**Dixon-Coles rho is not fitted from data.** The correction parameter (rho = 0.1) was set conservatively. A properly estimated value would require maximum likelihood estimation on historical goal data.
 
-**10,000 simulations is enough for stable percentages but not exact.** Title probabilities are stable to roughly ±0.5% at 10,000 runs. Doubling to 20,000 halves that variance but takes twice as long.
-
-**No home advantage.** For a tournament played at neutral venues in the USA, Canada, and Mexico, no home advantage adjustment is applied. USA and Mexico players could plausibly benefit slightly.
+**No host-nation advantage.** The tournament is played across the USA, Canada, and Mexico. No home-crowd adjustment is applied, though USA and Mexico may carry a small real-world edge.
 
 ---
 
-## Interview talking points
+## Technical notes
 
-1. **"I implemented a Dixon-Coles correction on top of the Poisson model."** Standard Poisson over-predicts 0-0 draws and under-predicts 1-0 results. Dixon and Coles (1997) derived a small multiplicative fix for these four low-score results. I implemented it and documented exactly what each term does.
+**Why EV-optimal rather than most-likely?** In a competition awarding 25 points for an exact score and 10 for the correct result, the expected value of predicting a common result scoreline often exceeds the expected value of predicting the single most probable exact score. The model solves this explicitly for every match.
 
-2. **"I use EV-optimal predictions rather than the most likely score."** In a competition with partial credit for getting the result right, the most likely scoreline is not always the best prediction. I compute the expected points for every possible scoreline and pick the one that maximises them. This is a decision theory idea, not just "predict the obvious".
+**Why Dixon-Coles?** Plain Poisson treats each team's goals as independent. In practice, teams adjust their behaviour at low scorelines — a team losing 0-1 pushes forward, making 1-1 more likely than independence implies. The correction accounts for this in the four most affected results.
 
-3. **"The model is backtestable."** The historical results file goes back to 1872. I can hold out any period, re-run the Elo computation, and measure how well the model would have predicted those real outcomes. This makes the model auditable rather than just plausible-looking.
+**Why Monte Carlo over a closed-form solution?** Computing exact knockout winning probabilities would require summing over every possible path through a 32-team bracket — computationally intractable. Monte Carlo gives estimates stable to ±0.5% at 10,000 runs with a straightforward implementation.
 
-4. **"I was honest about what the model does and doesn't know."** The limitations section explicitly flags estimated vs data-driven quantities. A model that overclaims precision is worse than one that is clear about its assumptions.
+---
+
+## Further reading
+
+- Dixon, M. & Coles, S. (1997). *Modelling Association Football Scores and Inefficiencies in the Football Betting Market.* Journal of the Royal Statistical Society, Series C.
+- [World Football Elo Ratings methodology](https://www.eloratings.net/about)
+- [docs/methodology.md](docs/methodology.md) — full walkthrough of every modelling decision in this project
