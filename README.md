@@ -1,6 +1,6 @@
 # FIFA World Cup 2026 Prediction
 
-A Python package for predicting the 2026 FIFA World Cup — covering all 72 group-stage matches, 32 knockout matches, and full tournament odds — built on Elo ratings, a Dixon-Coles corrected Poisson model, and Monte Carlo simulation.
+A Python package for predicting the 2026 FIFA World Cup — covering all 72 group-stage matches, 32 knockout matches, and full tournament odds — built on Elo ratings, a Dixon-Coles-corrected Poisson model, and Monte Carlo simulation.
 
 ---
 
@@ -144,5 +144,4 @@ python -m pytest tests/ -v
 ---
 
 ## Further reading
-- [World Football Elo Ratings methodology](https://www.eloratings.net/about)
 - [docs/methodology.md](docs/methodology.md) — full walkthrough of every modelling decision in this project
