@@ -49,6 +49,8 @@ JUDGMENT CALL — rho = 0.1:
     and shows you understand the literature, which matters for a portfolio.
 """
 
+from functools import lru_cache
+
 from scipy.stats import poisson
 
 
@@ -121,6 +123,7 @@ def _dixon_coles_tau(i: int, j: int, xg_a: float, xg_b: float, rho: float) -> fl
         return 1.0
 
 
+@lru_cache(maxsize=4096)
 def score_probabilities(
     xg_a: float,
     xg_b: float,
@@ -131,6 +134,11 @@ def score_probabilities(
     Return a dict mapping (home_goals, away_goals) -> probability.
 
     Probabilities are Dixon-Coles corrected and renormalised to sum to 1.
+
+    Cached: the same (xg_a, xg_b) pair recurs constantly during Monte Carlo
+    simulation (every simulation re-plays the same fixtures with the same
+    Elo-derived xG), so memoising this pure function turns ~10,000 repeated
+    grid computations per matchup into one.
 
     Args:
         xg_a:      Expected goals for team A (home).

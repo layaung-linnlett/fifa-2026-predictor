@@ -2,5 +2,6 @@ pandas>=2.0
 scipy>=1.11
 numpy>=1.25
 click>=8.1
+matplotlib>=3.8
 pytest>=7.4
 jupyter>=1.0

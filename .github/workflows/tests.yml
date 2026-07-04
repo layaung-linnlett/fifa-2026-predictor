@@ -23,4 +23,4 @@ jobs:
         run: pip install -e ".[test]"
 
       - name: Run tests
-        run: python -m pytest tests/test_elo.py tests/test_poisson_model.py tests/test_scoring.py -v
+        run: python -m pytest tests/ -v

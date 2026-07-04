@@ -40,15 +40,17 @@ The entire tournament — all 72 group matches and 32 knockout matches — is si
 
 | Team | Win the title | Reach the final | Reach the semi-final |
 |---|---:|---:|---:|
-| Argentina | ~18% | ~28% | ~42% |
-| Spain | ~15% | ~26% | ~44% |
-| France | ~12% | ~21% | ~36% |
-| Germany | ~9% | ~17% | ~28% |
-| Morocco | ~6% | ~10% | ~20% |
-| Japan | ~5% | ~10% | ~21% |
-| England | ~4% | ~9% | ~18% |
+| Argentina | ~23% | ~34% | ~49% |
+| Spain | ~16% | ~27% | ~42% |
+| France | ~12% | ~21% | ~35% |
+| Germany | ~8% | ~16% | ~30% |
+| Morocco | ~7% | ~13% | ~23% |
+| England | ~4% | ~9% | ~19% |
+| Portugal | ~4% | ~10% | ~21% |
 
-**Predicted winner: Argentina**, who win the tournament in roughly 1 in 5 simulations — reflecting their current form and Elo rating, not certainty. Any of the top teams can win on the day.
+**Predicted winner: Argentina**, who win the tournament in roughly 1 in 4 simulations — reflecting their current form and Elo rating, not certainty. Any of the top teams can win on the day.
+
+*(Table generated from `fifa-predictor simulate --sims 10000 --seed 42`.)*
 
 ---
 
@@ -65,12 +67,14 @@ fifa-2026-predictor/
 │   ├── scoring.py          # Competition points calculator
 │   └── cli.py              # Command-line interface
 ├── data/raw/
-│   ├── results.csv         # 49,000 historical international results
+│   ├── results.csv         # 49,477 historical international results, 1872-2026
 │   ├── group_fixtures.csv  # All 72 group-stage fixtures
 │   └── knockout_slots.csv  # Knockout bracket structure
-├── tests/                  # 62 automated tests
+├── tests/                  # 77 automated tests
 └── docs/methodology.md     # Full technical explanation
 ```
+
+**Data source:** `results.csv` is the [International football results from 1872 to 2026](https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017) dataset (Mart Jürisoo, Kaggle), 3.6 MB, included in this repo as-is.
 
 ---
 

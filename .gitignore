@@ -1,4 +1,6 @@
 venv/
+.venv/
+.venv*/
 __pycache__/
 *.pyc
 *.pyo
@@ -10,3 +12,8 @@ build/
 outputs/predictions/*.csv
 data/processed/
 .env
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
