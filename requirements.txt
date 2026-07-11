@@ -4,3 +4,4 @@ numpy>=1.25
 click>=8.1
 pytest>=7.4
 jupyter>=1.0
+matplotlib>=3.7

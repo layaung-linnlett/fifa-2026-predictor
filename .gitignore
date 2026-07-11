@@ -10,3 +10,7 @@ build/
 outputs/predictions/*.csv
 data/processed/
 .env
+.DS_Store
+
+# Don't commit individual data files over 50MB - use Git LFS or an external
+# download step instead if a future dataset grows past that.
