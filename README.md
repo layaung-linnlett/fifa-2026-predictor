@@ -17,21 +17,32 @@ For the full tournament, it outputs the probability of each team reaching the se
 
 | Team | Win the title | Reach the final | Reach the semi-final |
 |---|---:|---:|---:|
-| Argentina | ~18% | ~28% | ~42% |
-| Spain | ~15% | ~26% | ~44% |
-| France | ~12% | ~21% | ~36% |
-| Germany | ~9% | ~17% | ~28% |
-| Morocco | ~6% | ~10% | ~20% |
-| Japan | ~5% | ~10% | ~21% |
-| England | ~4% | ~9% | ~18% |
+| Argentina | ~23% | ~34% | ~49% |
+| Spain | ~16% | ~27% | ~42% |
+| France | ~12% | ~21% | ~35% |
+| Germany | ~8% | ~16% | ~30% |
+| Morocco | ~7% | ~13% | ~23% |
+| England | ~4% | ~9% | ~19% |
+| Portugal | ~4% | ~10% | ~21% |
 
-**Predicted winner: Argentina**, who win the tournament in roughly 1 in 5 simulations — reflecting their current form and Elo rating, not certainty. Any of the top teams can win on the day.
+**Predicted winner: Argentina**, who win the tournament in roughly 1 in 4 simulations — reflecting their current form and Elo rating, not certainty. Any of the top teams can win on the day.
+
+*(Table verified by re-running `fifa-predictor simulate --sims 10000 --seed 42`.)*
 
 ---
 
 ## Screenshots
 
-No exported chart images yet — the Elo ratings bar chart, the France vs Germany scoreline heatmap, and the title-odds bar chart are all generated live in `notebooks/fifa_prediction.ipynb`. Open the notebook to see them, or export a couple as PNGs into this section.
+**Elo ratings by team**
+![Elo ratings by team](outputs/figures/elo_ratings_by_team.png)
+
+**Scoreline probability heatmap**
+![Scoreline heatmap](outputs/figures/scoreline_heatmap_example.png)
+
+**Title odds — top 16**
+![Title odds top 16](outputs/figures/title_odds_top16.png)
+
+More charts (goals-per-match trend, group-stage scoreline distribution, stage progression) are in `outputs/figures/` and generated live in `notebooks/fifa_prediction.ipynb`.
 
 ---
 
