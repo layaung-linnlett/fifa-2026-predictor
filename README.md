@@ -157,4 +157,4 @@ jupyter notebook notebooks/fifa_prediction.ipynb
 
 ## Contact
 
-[github.com/layaung-linnlett](https://github.com/layaung-linnlett)
+**La Yaung Linn Lett** — [github.com/layaung-linnlett](https://github.com/layaung-linnlett) · [linkedin.com/in/layaung-linnlett](https://www.linkedin.com/in/layaung-linnlett/)

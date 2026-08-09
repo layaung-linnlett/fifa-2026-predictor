@@ -1,8 +1,13 @@
+# Mirrors pyproject.toml so the project can be installed either way.
+# Runtime (matches [project] dependencies)
 pandas>=2.0
 scipy>=1.11
 numpy>=1.25
 click>=8.1
-matplotlib>=3.8
+
+# Tests (matches the "test" optional-dependency group)
 pytest>=7.4
+
+# Notebook (matches the "notebook" optional-dependency group)
 jupyter>=1.0
-matplotlib>=3.7
+matplotlib>=3.8
