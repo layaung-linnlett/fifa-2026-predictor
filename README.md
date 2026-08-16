@@ -1,19 +1,11 @@
 # FIFA World Cup 2026 Prediction Engine
 
-Predicts every match of the 2026 FIFA World Cup using historical data, statistical modelling, and 10,000 simulated tournaments.
+Predicts all 104 matches of the 2026 FIFA World Cup from 49,477 historical international results, then simulates the tournament 10,000 times to get title odds.
 
 ---
 
-## Key findings
-
-It takes 49,000 historical international football results and uses them to answer one question: **who is most likely to win the 2026 World Cup, and by how much?**
-
-For every match — all 104 of them — the model predicts:
-- The most strategically optimal scoreline to submit
-- The probability of each possible result (home win / draw / away win)
-- Estimated corners and cards
-
-For the full tournament, it outputs the probability of each team reaching the semi-finals, final, and winning the title.
+## Key Findings
+**Argentina wins the tournament in roughly 1 in 4 simulations (23%)** — the highest of any team, but far from a safe bet. Six other teams clear 4%.
 
 | Team | Win the title | Reach the final | Reach the semi-final |
 |---|---:|---:|---:|
@@ -25,7 +17,9 @@ For the full tournament, it outputs the probability of each team reaching the se
 | England | ~4% | ~9% | ~19% |
 | Portugal | ~4% | ~10% | ~21% |
 
-**Predicted winner: Argentina**, who win the tournament in roughly 1 in 4 simulations — reflecting their current form and Elo rating, not certainty. Any of the top teams can win on the day.
+Those odds reflect current form and Elo rating, not certainty — any of the top teams can win on the day, which is the point of simulating rather than just ranking.
+
+For each of the 104 matches the model also outputs the scoreline that maximises expected competition points, the probability of a home win / draw / away win, and estimated corners and cards.
 
 *(Table verified by re-running `fifa-predictor simulate --sims 10000 --seed 42`.)*
 
@@ -46,8 +40,7 @@ More charts (goals-per-match trend, group-stage scoreline distribution, stage pr
 
 ---
 
-## Tech stack
-
+## Tech Stack
 - **Python 3.10+**
 - **pandas / numpy** — data loading and manipulation
 - **scipy.stats** — Poisson distribution for scoreline probabilities
@@ -79,8 +72,7 @@ See [docs/methodology.md](docs/methodology.md) for a detailed walkthrough of eve
 
 ---
 
-## Project structure
-
+## Project Structure
 ```
 fifa-2026-predictor/
 ├── src/fifa_predictor/
@@ -103,8 +95,7 @@ fifa-2026-predictor/
 
 ---
 
-## How to run
-
+## How To Run
 **Requirements:** Python 3.10+
 
 ```bash
@@ -146,8 +137,7 @@ jupyter notebook notebooks/fifa_prediction.ipynb
 
 ---
 
-## Limitations & future work
-
+## Limitations & Future Work
 - **Corners and cards are estimates.** The dataset only records goals, so these figures are based on each team's known playing style rather than measured statistics. Fitting this from real match-stats data would need a corners/cards dataset that isn't freely available in the same clean form as the goals data — worth revisiting if one turns up.
 - **No injury or squad information.** The model assumes both teams play full strength. A key injury could significantly change the real probability.
 - **Playoff teams are unknown.** Teams yet to qualify through playoffs are given an average rating. Ratings should be re-run once the playoff draws are confirmed.
